@@ -11,7 +11,7 @@ from docx.oxml.ns import qn
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 
 # ==============================================================================
-# 1. XML UTILITIES (GIỮ NGUYÊN HOÀN TOÀN TỪ BẢN TRƯỚC)
+# 1. XML UTILITIES (BẢO TOÀN ĐỊNH DẠNG & ÉP CỨNG CHUẨN OOXML)
 # ==============================================================================
 
 def copy_xml_element(src_element, dest_element, prop_tag: str):
@@ -474,3 +474,9 @@ if st.button("🚀 TIẾN HÀNH ĐỊNH DẠNG", use_container_width=True):
                         st.error(f"Đã xảy ra lỗi trong quá trình xử lý: {msg}")
             except Exception as e:
                 st.error(f"Lỗi hệ thống: {str(e)}")
+
+# ==============================================================================
+# BẢN QUYỀN (FOOTER)
+# ==============================================================================
+st.markdown("---")
+st.markdown("<p style='text-align: center; color: #888888; font-size: 14px;'>By Đặng Văn Nghĩa</p>", unsafe_allow_html=True)
