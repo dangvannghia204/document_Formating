@@ -404,7 +404,7 @@ class WordFormatterPipeline:
 st.set_page_config(page_title="Word Formatter Pro", page_icon="📝", layout="centered")
 
 st.title("📝 Word Formatter Pro")
-st.markdown("Công cụ tự động đồng bộ và chuẩn hóa định dạng Microsoft Word. - By Đặng Văn Nghĩa")
+st.markdown("Công cụ tự động đồng bộ và chuẩn hóa định dạng Microsoft Word - By Đặng Văn Nghĩa")
 
 st.markdown("### 1. Upload tài liệu")
 col1, col2 = st.columns(2)
