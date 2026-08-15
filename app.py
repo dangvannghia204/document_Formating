@@ -11,7 +11,7 @@ from docx.oxml.ns import qn
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 
 # ==============================================================================
-# 1. XML UTILITIES (GIỮ NGUYÊN HOÀN TOÀN TỪ BẢN TRƯỚC)
+# 1. XML UTILITIES (BẢO TOÀN ĐỊNH DẠNG & ÉP CỨNG CHUẨN OOXML)
 # ==============================================================================
 
 def copy_xml_element(src_element, dest_element, prop_tag: str):
@@ -398,35 +398,94 @@ class WordFormatterPipeline:
         os.replace(temp_path, self.output_path)
 
 # ==============================================================================
-# 4. STREAMLIT WEB APP UI
+# 4. STREAMLIT WEB APP UI (TỐI ƯU HÓA UX/UI & MOBILE FRIENDLY)
 # ==============================================================================
 
-st.set_page_config(page_title="Word Formatter Pro", page_icon="📝", layout="centered")
+# Cấu hình trang cơ bản
+st.set_page_config(page_title="Word Formatter Pro", page_icon="📄", layout="centered")
 
-st.title("📝 Word Formatter Pro - Version 1")
-st.markdown("Công cụ tự động đồng bộ và chuẩn hóa định dạng Microsoft Word - By Đặng Văn Nghĩa")
+# Nhúng CSS tùy chỉnh để ẩn các thành phần thừa, bo tròn nút và thiết kế Footer
+st.markdown("""
+<style>
+    /* Ẩn menu mặc định của Streamlit để giao diện sạch sẽ như một Web App độc lập */
+    #MainMenu {visibility: hidden;}
+    header {visibility: hidden;}
+    
+    /* Thiết kế form hướng dẫn nổi bật */
+    .instruction-box {
+        background-color: #f0f7ff;
+        padding: 15px 20px;
+        border-radius: 8px;
+        border-left: 5px solid #0d6efd;
+        margin-bottom: 25px;
+        font-size: 14.5px;
+        color: #333;
+    }
+    
+    /* Tùy chỉnh nút bấm (Button) */
+    .stButton>button {
+        font-weight: bold;
+        border-radius: 8px;
+        height: 50px;
+        transition: all 0.3s ease;
+    }
+    .stButton>button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+    
+    /* Thiết kế Footer đánh dấu bản quyền */
+    .footer {
+        text-align: center;
+        color: #888888;
+        font-size: 13.5px;
+        padding-top: 30px;
+        margin-top: 40px;
+        border-top: 1px solid #e0e0e0;
+    }
+</style>
+""", unsafe_allow_html=True)
 
-st.markdown("### 1. Upload tài liệu")
+# Tiêu đề ứng dụng
+st.markdown("<h1 style='text-align: center; color: #0d6efd; margin-bottom: 5px;'>📄 WORD FORMATTER PRO</h1>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; color: #6c757d; margin-bottom: 25px;'>Hệ thống tự động chuẩn hóa định dạng văn bản Microsoft Word</p>", unsafe_allow_html=True)
+
+# Hướng dẫn người dùng trực quan
+st.markdown("""
+<div class="instruction-box">
+    <strong>💡 Hướng dẫn nhanh:</strong><br>
+    1. Tải lên <b>File Mẫu</b> (chứa định dạng chuẩn bạn muốn áp dụng).<br>
+    2. Tải lên <b>File Dữ Liệu</b> (chứa nội dung thô cần định dạng).<br>
+    3. Bấm nút <b>TIẾN HÀNH ĐỊNH DẠNG</b> và chờ nhận kết quả.
+</div>
+""", unsafe_allow_html=True)
+
+# Khu vực Upload File (Tự động chuyển thành cột dọc trên Mobile)
 col1, col2 = st.columns(2)
 with col1:
-    template_file = st.file_uploader("Tải lên File Mẫu (.docx)", type=["docx"])
+    template_file = st.file_uploader("📂 Tải lên File Mẫu (.docx)", type=["docx"])
 with col2:
-    raw_file = st.file_uploader("Tải lên File Dữ Liệu Thô (.docx)", type=["docx"])
+    raw_file = st.file_uploader("📝 Tải lên File Dữ Liệu (.docx)", type=["docx"])
 
-st.markdown("### 2. Cấu hình định dạng")
-c1, c2 = st.columns(2)
-with c1:
-    cfg_font = st.checkbox("Font & Cỡ chữ", value=True)
-    cfg_paragraph = st.checkbox("Khoảng cách dòng & Đoạn", value=True)
-    cfg_heading = st.checkbox("Cấu trúc Heading", value=True)
-with c2:
-    cfg_table = st.checkbox("Định dạng Bảng biểu (Khít viền)", value=True)
-    cfg_page_setup = st.checkbox("Khổ giấy & Căn lề", value=True)
-    cfg_preserve_char = st.checkbox("Bảo tồn chữ In Đậm/Nghiêng", value=True)
+# Gom các cấu hình phức tạp vào một mục thu gọn (Expander) để giao diện mặc định sạch sẽ
+with st.expander("⚙️ Tùy chỉnh nâng cao (Dành cho người dùng chuyên sâu)", expanded=False):
+    st.markdown("<small style='color: #666;'>Mặc định hệ thống đã kích hoạt toàn bộ tính năng tối ưu nhất. Bạn có thể tắt nếu không cần thiết.</small>", unsafe_allow_html=True)
+    c1, c2 = st.columns(2)
+    with c1:
+        cfg_font = st.checkbox("Font & Cỡ chữ", value=True)
+        cfg_paragraph = st.checkbox("Khoảng cách dòng & Đoạn", value=True)
+        cfg_heading = st.checkbox("Cấu trúc Heading", value=True)
+    with c2:
+        cfg_table = st.checkbox("Định dạng Bảng biểu (Khít viền)", value=True)
+        cfg_page_setup = st.checkbox("Khổ giấy & Căn lề", value=True)
+        cfg_preserve_char = st.checkbox("Bảo tồn chữ In Đậm/Nghiêng", value=True)
 
-if st.button("🚀 TIẾN HÀNH ĐỊNH DẠNG", use_container_width=True):
+st.markdown("<br>", unsafe_allow_html=True)
+
+# Nút thực thi chính
+if st.button("🚀 TIẾN HÀNH ĐỊNH DẠNG", use_container_width=True, type="primary"):
     if not template_file or not raw_file:
-        st.error("Vui lòng tải lên đầy đủ File Mẫu và File Dữ Liệu Thô!")
+        st.warning("⚠️ Vui lòng tải lên đầy đủ File Mẫu và File Dữ Liệu trước khi bắt đầu!")
     else:
         progress_bar = st.progress(0)
         status_text = st.empty()
@@ -435,14 +494,13 @@ if st.button("🚀 TIẾN HÀNH ĐỊNH DẠNG", use_container_width=True):
             progress_bar.progress(percent / 100.0)
             status_text.text(msg)
 
-        # Tạo thư mục tạm để xử lý file
+        # Xử lý Logic trong thư mục tạm
         with tempfile.TemporaryDirectory() as tmpdirname:
             tpl_path = os.path.join(tmpdirname, template_file.name)
             raw_path = os.path.join(tmpdirname, raw_file.name)
             output_name = raw_file.name.replace(".docx", "_Formatted.docx")
             out_path = os.path.join(tmpdirname, output_name)
 
-            # Lưu file upload xuống ổ đĩa cục bộ tạm thời
             with open(tpl_path, "wb") as f: f.write(template_file.getbuffer())
             with open(raw_path, "wb") as f: f.write(raw_file.getbuffer())
 
@@ -452,25 +510,30 @@ if st.button("🚀 TIẾN HÀNH ĐỊNH DẠNG", use_container_width=True):
             }
 
             try:
-                update_progress(5, "Đang phân tích định dạng thị giác từ File mẫu...")
+                update_progress(5, "Đang phân tích cấu trúc tài liệu...")
                 engine = VisualTemplateEngine(tpl_path)
                 if not engine.analyze()[0]:
-                    st.error("Lỗi: Không thể phân tích File Mẫu.")
+                    st.error("❌ Lỗi: Không thể đọc được File Mẫu của bạn.")
                 else:
                     formatter = WordFormatterPipeline(raw_path, engine, out_path, config, update_progress)
                     success, msg = formatter.execute()
                     
                     if success:
-                        st.success("🎉 Xử lý thành công! Nhấn nút bên dưới để tải về.")
+                        status_text.empty() # Xóa dòng trạng thái đang tải
+                        st.success("🎉 Định dạng hoàn tất! File của bạn đã sẵn sàng.")
                         with open(out_path, "rb") as f:
                             st.download_button(
-                                label="⬇️ Tải xuống File Kết Quả",
+                                label="⬇️ TẢI XUỐNG FILE KẾT QUẢ",
                                 data=f,
                                 file_name=output_name,
                                 mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-                                use_container_width=True
+                                use_container_width=True,
+                                type="secondary"
                             )
                     else:
-                        st.error(f"Đã xảy ra lỗi trong quá trình xử lý: {msg}")
+                        st.error(f"❌ Có lỗi xảy ra trong quá trình xử lý: {msg}")
             except Exception as e:
-                st.error(f"Lỗi hệ thống: {str(e)}")
+                st.error(f"❌ Lỗi hệ thống: {str(e)}")
+
+# Chân trang bản quyền (Footer)
+st.markdown('<div class="footer">By <b>Đặng Văn Nghĩa</b></div>', unsafe_allow_html=True)
