@@ -404,22 +404,12 @@ class WordFormatterPipeline:
 # Cấu hình trang cơ bản
 st.set_page_config(page_title="Word Formatter Pro", page_icon="📄", layout="centered")
 
-# Nhúng CSS tùy chỉnh để fix UI rớt dòng trên Mobile, ẩn các thành phần thừa và thiết kế Footer
+# Nhúng CSS tùy chỉnh để ẩn các thành phần thừa, bo tròn nút và thiết kế Footer
 st.markdown("""
 <style>
     /* Ẩn menu mặc định của Streamlit để giao diện sạch sẽ như một Web App độc lập */
     #MainMenu {visibility: hidden;}
     header {visibility: hidden;}
-    
-    /* FIX LỖI TITLE RỚT DÒNG TRÊN MOBILE: Dùng clamp để font size co giãn thông minh */
-    .main-title {
-        text-align: center;
-        color: #0d6efd;
-        margin-bottom: 5px;
-        font-weight: 800;
-        font-size: clamp(1.4rem, 5vw, 2.5rem); 
-        white-space: nowrap; 
-    }
     
     /* Thiết kế form hướng dẫn nổi bật */
     .instruction-box {
@@ -456,8 +446,8 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# Tiêu đề ứng dụng (Đã áp dụng Class responsive .main-title)
-st.markdown("<h1 class='main-title'>📄 WORD FORMATTER PRO</h1>", unsafe_allow_html=True)
+# Tiêu đề ứng dụng
+st.markdown("<h1 style='text-align: center; color: #0d6efd; margin-bottom: 5px;'>📄 WORD FORMATTER PRO</h1>", unsafe_allow_html=True)
 st.markdown("<p style='text-align: center; color: #6c757d; margin-bottom: 25px;'>Hệ thống tự động chuẩn hóa định dạng văn bản Microsoft Word</p>", unsafe_allow_html=True)
 
 # Hướng dẫn người dùng trực quan
@@ -478,7 +468,7 @@ with col2:
     raw_file = st.file_uploader("📝 Tải lên File Dữ Liệu (.docx)", type=["docx"])
 
 # Gom các cấu hình phức tạp vào một mục thu gọn (Expander) để giao diện mặc định sạch sẽ
-with st.expander("⚙️ Tùy chỉnh nâng cao (Dành cho người dùng chuyên sâu)", expanded=False):
+with st.expander("⚙️ Tùy chỉnh nâng cao", expanded=False):
     st.markdown("<small style='color: #666;'>Mặc định hệ thống đã kích hoạt toàn bộ tính năng tối ưu nhất. Bạn có thể tắt nếu không cần thiết.</small>", unsafe_allow_html=True)
     c1, c2 = st.columns(2)
     with c1:
