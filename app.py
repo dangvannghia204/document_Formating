@@ -468,7 +468,7 @@ with col2:
     raw_file = st.file_uploader("📝 Tải lên File Dữ Liệu (.docx)", type=["docx"])
 
 # Gom các cấu hình phức tạp vào một mục thu gọn (Expander) để giao diện mặc định sạch sẽ
-with st.expander("⚙️ Tùy chỉnh nâng cao (Dành cho người dùng chuyên sâu)", expanded=False):
+with st.expander("⚙️ Tùy chỉnh nâng cao", expanded=False):
     st.markdown("<small style='color: #666;'>Mặc định hệ thống đã kích hoạt toàn bộ tính năng tối ưu nhất. Bạn có thể tắt nếu không cần thiết.</small>", unsafe_allow_html=True)
     c1, c2 = st.columns(2)
     with c1:
